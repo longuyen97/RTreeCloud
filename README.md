@@ -1,9 +1,15 @@
 ##  R-Tree Cloud
 
-<img src="data/obama-output.png" width="750"/>
-<img src="data/trump-output.png" width="750"/>
-<img src="data/vietnam-output.png" width="750"/>
-<img src="data/churchill-output.png" width="750"/>
+### Screenshots
+
+<table>
+    <tr>
+        <td><img src="data/obama-output.png" width="500"/></td>
+        <td><img src="data/trump-output.png" width="500"/></td>
+        <td><img src="data/vietnam-output.png" width="500"/></td>
+        <td><img src="data/churchill-output.png" width="500"/></td>
+    </tr>
+</table>
 
 ### Motivation
 

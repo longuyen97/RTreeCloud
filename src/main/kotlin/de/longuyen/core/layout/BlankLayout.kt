@@ -9,8 +9,10 @@ import org.apache.logging.log4j.LogManager
 import java.awt.Color
 import java.awt.geom.Point2D
 import java.awt.image.BufferedImage
+import java.lang.Math.log
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.ln
 
 class BlankLayout(private val collisionAlgorithm: CollisionAlgorithm, private val tokenizer: Tokenizer) : Layout(){
     private val log = LogManager.getLogger(BlankLayout::class.java)
@@ -23,33 +25,34 @@ class BlankLayout(private val collisionAlgorithm: CollisionAlgorithm, private va
 
         val allTokens = count.keys.toMutableList()
         allTokens.sortByDescending {count[it]}
-        val minAppearance = count[allTokens.last()]!!
-        val maxAppearance = count[allTokens.first()]!!
-        log.info("Most frequent token appears $maxAppearance times. Least frequent token appears $minAppearance times.")
 
         val subTokens = allTokens.subList(0, (allTokens.size))
+        val minAppearance = count[subTokens.last()]!!
+        val maxAppearance = count[subTokens.first()]!!
+        log.info("Most frequent token appears $maxAppearance times. Least frequent token appears $minAppearance times.")
         log.info("${subTokens.size} tokens will be used for generating image.")
 
         val ret = mutableListOf<Word>()
         while (subTokens.isNotEmpty()) {
             val token = subTokens.random()
-            val coefficient = count[token]!!.toFloat() / minAppearance.toFloat()
-            val fontSize = java.lang.Float.min(coefficient * minSize, maxSize)
+            val coefficient = count[token]!!.toDouble() / minAppearance.toDouble()
+            val fontSize = java.lang.Float.min((coefficient * minSize).toFloat(), maxSize)
             log.info("Token $token appears ${count[token]} times with a coefficient $coefficient. Has a font size of $fontSize")
 
             val font = HelveticaCustomFont(fontSize)
             var found = false
             val horizontal = random.nextInt(100) < 85
             var word = Word(font, preferedColor, token, horizontal, Point2D.Double(0.0, 0.0))
-            while (!found && word.fontSize() > minSize / 4) {
+            while (!found && word.fontSize() > minSize) {
                 var y = 0
                 while (!found && y < image.height - word.height()) {
                     var x = 0
                     while (!found && x < image.width - word.width()) {
                         word = Word(word.font, preferedColor, token, horizontal, Point2D.Double(x.toDouble(), y.toDouble()))
-                        if (!collisionAlgorithm.has(word.rectangle(), 1.0)) {
+                        if (!collisionAlgorithm.has(word.rectangle(), 2.0)) {
                             collisionAlgorithm.add(word.rectangle())
                             ret.add(word)
+                            foundCallback.callback(word)
                             found = true
                         }
                         x += 4
@@ -57,12 +60,11 @@ class BlankLayout(private val collisionAlgorithm: CollisionAlgorithm, private va
                     y += 4
                 }
                 if(!found) {
-                    word = word.resize(word.fontSize() - 2)
+                    word = word.resize(word.fontSize() - minSize)
                     log.info("Token $token can not find a place. Try a smaller font with ${word.fontSize()}")
                 }
             }
             subTokens.remove(token)
-            foundCallback.callback(word)
         }
 
         log.info("${ret.size} tokens found their place in the image.")

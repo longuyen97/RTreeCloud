@@ -6,12 +6,16 @@ import de.longuyen.core.layout.BlankLayout
 import de.longuyen.core.layout.Layout
 import org.apache.logging.log4j.LogManager
 import java.awt.Color
+import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
+import javax.swing.JFrame
+import javax.swing.JPanel
+import javax.swing.WindowConstants.EXIT_ON_CLOSE
 
 class BlankCloud(
     private val width: Int,
@@ -34,6 +38,22 @@ class BlankCloud(
 
         layout.produce(ret, text, Color.BLACK, foundCallback = object: FoundCallback{
             private val uuid = UUID.randomUUID().toString()
+            private val frame = JFrame()
+            private val panel = object: JPanel(){
+                override fun paintComponent(g: Graphics) {
+                    super.paintComponent(g)
+                    g.drawImage(ret, 0, 0, width, height, this)
+                }
+            }
+
+            init {
+                frame.setSize(width, height)
+                frame.add(panel)
+                frame.isResizable = false
+                frame.isVisible = true
+                frame.defaultCloseOperation = EXIT_ON_CLOSE
+            }
+
             override fun callback(word: Word) {
                 graphics.color = word.color
                 graphics.font = word.font.font()
@@ -42,6 +62,8 @@ class BlankCloud(
                 } else {
                     drawRotate(graphics, word.position.x, word.position.y, 90, word.word)
                 }
+                panel.repaint()
+                panel.revalidate()
                 ImageIO.write(ret, "PNG", File("target/${uuid}.png"))
             }
         })

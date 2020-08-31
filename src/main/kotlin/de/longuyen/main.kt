@@ -1,8 +1,8 @@
 package de.longuyen
 
 import de.longuyen.collision.RtreeCollisionAlgorithm
-import de.longuyen.core.WordCloud
-import de.longuyen.core.WordLayout
+import de.longuyen.core.cloud.BlankCloud
+import de.longuyen.core.layout.BlankLayout
 import de.longuyen.nlp.LuceneTokenizer
 import java.io.File
 import java.nio.file.Files
@@ -11,8 +11,8 @@ import javax.imageio.ImageIO
 
 fun main(){
     val text = Files.readAllLines(Paths.get("data/charliechaplin.txt")).joinToString("\n")
-    val wordLayout = WordLayout(RtreeCollisionAlgorithm(), LuceneTokenizer())
-    val wordCloud = WordCloud(text, wordLayout)
-    val image = wordCloud.generate(500, 500)
+    val layout = BlankLayout(RtreeCollisionAlgorithm(), LuceneTokenizer())
+    val wordCloud = BlankCloud(500, 500, text, layout)
+    val image = wordCloud.generate()
     ImageIO.write(image, "PNG", File("target/output.png"))
 }

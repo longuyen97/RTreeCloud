@@ -1,4 +1,4 @@
-package de.longuyen.cosmetics
+package de.longuyen.fonts
 
 import java.awt.Font
 import java.awt.font.FontRenderContext
@@ -12,21 +12,19 @@ class AnonymousCustomFont(size: Float) : CustomFont(size) {
         private val file = Paths.get(resource.toURI()).toFile()
     }
     private val font = Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(size)
+    private val transform = AffineTransform()
+    private val renderContext = FontRenderContext(transform, true, true)
 
     override fun font(): Font {
         return font
     }
 
-    override fun height(text: String): Int {
-        val transform = AffineTransform()
-        val frc = FontRenderContext(transform, true, true)
-        return font.getStringBounds(text, frc).height.toInt()
+    override fun height(text: String): Double {
+        return font.getStringBounds(text, renderContext).height
     }
 
-    override fun width(text: String): Int {
-        val transform = AffineTransform()
-        val frc = FontRenderContext(transform, true, true)
-        return font.getStringBounds(text, frc).width.toInt()
+    override fun width(text: String): Double {
+        return font.getStringBounds(text, renderContext).width
     }
 
     override fun resize(size: Float): CustomFont {

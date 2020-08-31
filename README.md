@@ -1,4 +1,9 @@
-##  Cloudy text
+##  R-Tree Cloud
+
+<img src="data/obama-output.png" width="750"/>
+<img src="data/trump-output.png" width="750"/>
+<img src="data/vietnam-output.png" width="750"/>
+<img src="data/churchill-output.png" width="750"/>
 
 ### Motivation
 

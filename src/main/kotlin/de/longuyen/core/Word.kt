@@ -31,15 +31,15 @@ class Word(val font: CustomFont, val color: Color, val word: String, val horizon
         }
     }
 
-    fun translate(newPosition: Point2D) : Word{
-        return Word(font, color, word, horizontal, newPosition)
-    }
-
-    fun rotate() : Word{
-        return Word(font, color, word, horizontal.not(), position)
+    fun colorize(newColor: Color) : Word{
+        return Word(font, newColor, word, horizontal, position)
     }
 
     fun resize(size: Float) : Word{
         return Word(font.resize(size), color, word, horizontal, position)
+    }
+
+    fun fontSize() : Float {
+        return font.size
     }
 }

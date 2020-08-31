@@ -1,29 +1,51 @@
 package de.longuyen.core.cloud
 
+import de.longuyen.core.FoundCallback
+import de.longuyen.core.Word
 import de.longuyen.core.layout.BlankLayout
+import de.longuyen.core.layout.Layout
 import org.apache.logging.log4j.LogManager
 import java.awt.Color
 import java.awt.Graphics2D
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
+import java.io.File
+import java.util.*
+import javax.imageio.ImageIO
 
-class BlankCloud(private val width: Int, private val height: Int, private val text: String, private val layout: BlankLayout) {
+class BlankCloud(
+    private val width: Int,
+    private val height: Int,
+    private val text: String,
+    private val layout: Layout
+) :
+    Cloud() {
     private val log = LogManager.getLogger(BlankLayout::class.java)
 
-    fun generate() : BufferedImage{
+    override fun generate(): BufferedImage {
         log.info("Generating image with width $width and height $height")
 
         val ret = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-        val words = layout.produce(ret, text, Color.WHITE)
         val graphics = ret.graphics as Graphics2D
+        graphics.color = Color.WHITE
+        graphics.fillRect(0, 0, width, height)
+        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON)
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 
-        for(word in words){
-            graphics.color = word.color
-            if(word.horizontal) {
-                drawRotate(graphics, word.position.x, word.position.y, 90, word.word)
-            }else{
-                drawRotate(graphics, word.position.x, word.position.y, 0, word.word)
+        layout.produce(ret, text, Color.BLACK, foundCallback = object: FoundCallback{
+            private val uuid = UUID.randomUUID().toString()
+            override fun callback(word: Word) {
+                graphics.color = word.color
+                graphics.font = word.font.font()
+                if (word.horizontal) {
+                    drawRotate(graphics, word.position.x, word.position.y + word.height(), 0, word.word)
+                } else {
+                    drawRotate(graphics, word.position.x, word.position.y, 90, word.word)
+                }
+                ImageIO.write(ret, "PNG", File("target/${uuid}.png"))
             }
-        }
+        })
+        ImageIO.write(ret, "PNG", File("target/output.png"))
         return ret
     }
 

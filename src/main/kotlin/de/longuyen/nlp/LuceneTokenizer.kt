@@ -11,8 +11,6 @@ class LuceneTokenizer : Tokenizer {
         .withTokenizer("standard")
         .addTokenFilter("lowercase")
         .addTokenFilter("stop")
-        .addTokenFilter("porterstem")
-        .addTokenFilter("capitalization")
         .build()
 
     override fun tokenize(text: String): List<String> {

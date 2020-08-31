@@ -6,18 +6,23 @@
     <tr>
         <td><img src="data/shakespeare-output.png" width="500"/></td>
         <td><img src="data/obama-output.png" width="500"/></td>
-        <td><img src="data/vietnam-output.png" width="500"/></td>
     </tr>
     <tr>
         <td><img src="data/goethe-output.png" width="500"/></td>
         <td><img src="data/trump-output.png" width="500"/></td>
+    </tr>
+    <tr>
+        <td><img src="data/vietnam-output.png" width="500"/></td>
         <td><img src="data/churchill-output.png" width="500"/></td>
     </tr>
 </table>
 
-### Motivation
-
 ### Algorithms
+- Generate R-Tree index for rectangles
+- Tokenize and count words
+- Generate bounding box for each token
+- Find free space for each token according to token's frequency.
+- If no free space found, reduce font size.
 
 ### References
 - [Immutable in-memory R-tree and R*-tree implementations in Java with reactive api](https://github.com/davidmoten/rtree)

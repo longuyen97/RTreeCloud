@@ -1,4 +1,4 @@
-##  R-Tree Cloud
+<h1 align="center">R-Tree Cloud</h1>
 
 ### Screenshots
 

@@ -15,6 +15,10 @@ class Word(val font: CustomFont, val color: Color, val word: String, val isVerti
         }
     }
 
+    fun translate(newPosition: Point2D) : Word{
+        return Word(font, color, word, isVertical, newPosition)
+    }
+
     fun rotate() : Word{
         return Word(font, color, word, isVertical.not(), position)
     }

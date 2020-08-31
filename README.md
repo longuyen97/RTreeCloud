@@ -4,11 +4,13 @@
 
 <table>
     <tr>
+        <td><img src="data/shakespeare-output.png" width="500"/></td>
         <td><img src="data/obama-output.png" width="500"/></td>
-        <td><img src="data/trump-output.png" width="500"/></td>
+        <td><img src="data/vietnam-output.png" width="500"/></td>
     </tr>
     <tr>
-        <td><img src="data/vietnam-output.png" width="500"/></td>
+        <td><img src="data/goethe-output.png" width="500"/></td>
+        <td><img src="data/trump-output.png" width="500"/></td>
         <td><img src="data/churchill-output.png" width="500"/></td>
     </tr>
 </table>

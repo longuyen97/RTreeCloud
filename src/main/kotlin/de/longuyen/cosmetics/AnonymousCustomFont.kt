@@ -1,4 +1,4 @@
-package de.longuyen.core
+package de.longuyen.cosmetics
 
 import java.awt.Font
 import java.awt.font.FontRenderContext

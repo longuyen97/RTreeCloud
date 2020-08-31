@@ -12,6 +12,7 @@ import java.awt.RenderingHints
 import java.awt.geom.Point2D
 import java.awt.image.BufferedImage
 import java.io.File
+import java.lang.Integer.max
 import java.util.*
 import javax.imageio.ImageIO
 import javax.swing.JFrame
@@ -75,7 +76,7 @@ class BlankCloud(
 
             val font = HelveticaCustomFont(fontSize)
             var found = false
-            val horizontal = random.nextInt(100) < 75
+            val horizontal = random.nextInt(100) < 65
             var word = Word(font, preferedColor, token, horizontal, Point2D.Double(0.0, 0.0))
 
             // Find fitting shape first
@@ -88,6 +89,27 @@ class BlankCloud(
 
                         // Found place for word. Render it
                         if (!collisionAlgorithm.has(word.rectangle(), 2.0)) {
+                            var red = 0.0
+                            var green = 0.0
+                            var blue = 0.0
+                            val steps = 2
+                            for(yi in word.position.y.toInt() until word.position.y.toInt() + word.height().toInt() step steps){
+                                for(xi in word.position.x.toInt() until word.position.x.toInt() + word.width().toInt() step steps){
+                                    val pixColor = Color(groundTruth.getRGB(xi, yi))
+                                    red += pixColor.red
+                                    green += pixColor.green
+                                    blue += pixColor.blue
+                                }
+                            }
+                            try {
+                                red /= ((word.height() * word.width()) / (steps * steps))
+                                green /= ((word.height() * word.width()) / (steps * steps))
+                                blue /= ((word.height() * word.width()) / (steps * steps))
+                                word = word.colorize(Color(max(50, red.toInt()), max(50, green.toInt()), max(50, blue.toInt())))
+                            }catch (e: Exception){
+                                word = word.colorize(preferedColor)
+                            }
+
                             collisionAlgorithm.add(word.rectangle())
                             ret.add(word)
                             graphics.color = word.color

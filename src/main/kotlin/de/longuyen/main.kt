@@ -10,8 +10,9 @@ import java.nio.file.Paths
 import javax.imageio.ImageIO
 
 fun main(){
-    val text = Files.readAllLines(Paths.get("data/obama.txt")).joinToString("\n")
-    val wordCloud = BlankCloud(ImageIO.read(File("data/obama.png")),1000, 1000, RtreeCollisionAlgorithm(), LuceneTokenizer())
-    val image = wordCloud.generate(text, Color.WHITE, 5f, 50f)
+    val text = Files.readAllLines(Paths.get("data/vietnam.txt")).joinToString("\n")
+    val groundTruth = ImageIO.read(File("data/vietnam.png"))
+    val wordCloud = BlankCloud(groundTruth,groundTruth.width, groundTruth.height, RtreeCollisionAlgorithm(), LuceneTokenizer())
+    val image = wordCloud.generate(text, Color.WHITE, 5f, 35f)
     ImageIO.write(image, "PNG", File("target/output.png"))
 }

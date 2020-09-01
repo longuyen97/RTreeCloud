@@ -23,6 +23,14 @@ class RtreeCollisionAlgorithm : CollisionAlgorithm() {
         return matches > 0
     }
 
+    override fun copy(): CollisionAlgorithm {
+        return RtreeCollisionAlgorithm()
+    }
+
+    override fun visualize(path: String, width: Int, height: Int) {
+        tree.visualize(width,height).save(path)
+    }
+
     override fun has(point: Point, maxDistance: Double) : Boolean{
         val result =  tree.search(point, maxDistance)
         val matches: Int = result.count().toBlocking().single()

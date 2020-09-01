@@ -9,6 +9,7 @@ import java.util.*
 class LuceneTokenizer : Tokenizer {
     private val analyzer: Analyzer = CustomAnalyzer.builder()
         .withTokenizer("standard")
+        .addTokenFilter("lowercase")
         .build()
 
     override fun tokenize(text: String): List<String> {

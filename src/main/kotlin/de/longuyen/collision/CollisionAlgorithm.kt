@@ -10,4 +10,6 @@ abstract class CollisionAlgorithm {
     abstract fun has(rectangle: Rectangle, maxDistance: Double): Boolean
     abstract fun has(point: Point, maxDistance: Double) : Boolean
     abstract fun has(point: Point) : Boolean
+    abstract fun copy() : CollisionAlgorithm
+    abstract fun visualize(path: String, width: Int, height: Int)
 }
